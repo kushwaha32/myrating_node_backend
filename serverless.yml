@@ -18,7 +18,7 @@ provider:
 
 functions:
   hello:
-    handler: handler.devRaj
+    handler: handler.rajdev
     events:
       - http: ANY /{proxy+}
       - http: ANY /
