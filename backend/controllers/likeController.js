@@ -17,10 +17,10 @@ const catchAsync = require("../utils/catchAsync");
 
 exports.getReview = catchAsync(async(req, res, next) => {
       if(!req.body.product) req.body.product = req.params.productId
-      console.log(req.params);
+    
       const product = await Product.findOne({productNameSlug: req.body.product})
       const likes = await Like.find({product: product._id});
-      console.log(likes)
+     
 
       res.status(200).json({
         status: "success",

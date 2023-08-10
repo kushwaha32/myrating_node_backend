@@ -236,7 +236,7 @@ exports.otpVerify = catchAsync(async (req, res, next) => {
 
   user = await user.save({ validateBeforeSave: false });
 
-  console.log("my otp:" + req.body.contactNumber);
+ 
   //  delete the opt
   await MobileOtp.deleteMany({
     contactNumber: rightOtpFind.contactNumber,

@@ -1,5 +1,5 @@
 'use strict';
-const app = require("./backend/app");
+const server = require("./backend/server");
 const severless = require("serverless-http")
 
-module.exports.rajdev = severless(app);
+module.exports.rajdev = severless(server);

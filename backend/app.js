@@ -23,14 +23,15 @@ const regiteredAsRoute = require("./routes/registeredAsRoute");
 const reviewAgreeAndDisAgreeRoute = require("./routes/reviewAgreeAndDisAgreeRoute");
 const searchCityRoute = require("./routes/searchCityRoute");
 const brandProductRoute = require("./routes/business/businessRoute");
+const bucketImgRoute = require("./routes/bucketImgRoute");
 
 const app = express();
 app.use(express.static(`${__dirname}/public`));
 // 1) GLOBAL MIDDLEWARES
 // prevent cross site scription
 const corsOpts = {
-  origin: "http://localhost:3000",
-  // origin: "https://myratings.in",
+  // origin: "http://localhost:3000",
+  origin: "https://myratings.in",
   credentials: true,
   methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   allowedHeaders: [
@@ -78,6 +79,10 @@ app.use(express.static(`${__dirname}/public`));
 // routes
 
 // user route
+
+// bucket permision
+app.use("/api/v1/s3bucktet", bucketImgRoute)
+
 app.use("/api/v1/user", userRoutes);
 
 // product route

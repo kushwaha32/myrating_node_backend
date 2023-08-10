@@ -8,8 +8,8 @@ exports.updateBusinessProfile = catchAsync(async (req, res, next) => {
 
   // assing the image if exists
   let profileImg;
-  if (req.file) {
-    profileImg = req.file.filename;
+  if (req.body.image) {
+    profileImg = req.body.image;
   }
   const { brandName, registeredAs, location, industry } = req.body;
 

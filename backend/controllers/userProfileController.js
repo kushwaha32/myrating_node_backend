@@ -32,8 +32,8 @@ exports.getUserProfile = catchAsync(async (req, res, next) => {
 exports.createUserProfile = catchAsync(async (req, res, next) => {
 
   let profileImg;
-  if (req.file) {
-    profileImg = req.file.filename;
+  if (req.body.image) {
+    profileImg = req.body.image;
   }
   // create the profile
   const userProfile = await UserProfile.create({
@@ -74,8 +74,8 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
   const profile = await UserProfile.findOne({ user: req.user.id });
 
   let profileImg;
-  if (req.file) {
-    profileImg = req.file.filename;
+  if (req.body.image) {
+    profileImg = req.body.image;
   }
 
   const upLocation = JSON.parse(req.body.location);
@@ -97,7 +97,7 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
     },
     { new: true, runValidators: true }
   );
-  console.log(updatedUserProfile);
+ 
   const user = await User.findOne({ _id: req.user.id })
     .populate("userProfile")
     .populate("proffession");

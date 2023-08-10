@@ -33,7 +33,7 @@ router.route("/product-within/:distance/center/:latlng/unit/:unit").get(getTours
 router.route("/").get(getSubCategoryId, getAllProduct);
 
 // Create Product
-router.route("/").post(protect, restrictTo("business", "admin"), uploadProductImage, createProduct);
+router.route("/").post(protect, restrictTo("business", "admin"), createProduct);
 
 // Get single product
 router.route("/:productNameSlug").get(getSingleProduct);
@@ -41,7 +41,7 @@ router.route("/:productNameSlug").get(getSingleProduct);
 // Update Product
 router
   .route("/:id")
-  .patch(protect, restrictTo("business", "admin"), uploadProductImage, updateSingleProduct);
+  .patch(protect, restrictTo("business", "admin"),  updateSingleProduct);
 
 // Delete Product
 router

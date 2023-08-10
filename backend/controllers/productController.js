@@ -157,8 +157,8 @@ exports.createProduct = catchAsync(async (req, res, next) => {
 
   // destruct the product fields from the req.body
 
-  const productImg = req.file.filename;
-  const { productName, category, bio, location } = req.body;
+  // const productImg = req.file.filename;
+  const { productName, category, bio, location, image } = req.body;
   const productNameSlug = productName.split(" ").join("-");
 
   const product = await Product.create({
@@ -167,7 +167,7 @@ exports.createProduct = catchAsync(async (req, res, next) => {
     productNameSlug,
     subCategory: category,
     bio,
-    proifleImg: productImg,
+    proifleImg: image,
     location: JSON.parse(location),
   });
 
@@ -226,14 +226,14 @@ exports.updateSingleProduct = catchAsync(async (req, res, next) => {
   const productId = req.params.id;
 
   // destructure the fields from the req.body
-  const { productName, category, bio, location } = req.body;
+  const { productName, category, bio, image } = req.body;
 
   const productNameSlug = productName.split(" ").join("-");
 
   // Check if an image file was uploaded
   let productImg;
-  if (req.file) {
-    productImg = req.file.filename;
+  if (image) {
+    productImg = image;
   }
 
   // updating the product

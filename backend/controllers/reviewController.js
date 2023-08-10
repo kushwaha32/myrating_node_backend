@@ -28,7 +28,7 @@ const calculateAverageRating = async (productId) => {
   // update the average rating in product
   if (stats.length === 0) {
     return await Product.findByIdAndUpdate(productId, {
-      averageRating: 1,
+      averageRating: 0,
       nRating: 0,
     });
   }
@@ -176,7 +176,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const productOwner = populatedReview.product.user;
   // update the product owner peaches
 
-  if (productOwner) {
+  if (productOwner && (rating > 0)) {
     await calcPeaches(productOwner);
   }
 
@@ -184,7 +184,11 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const reviewOwner = populatedReview.user;
 
   // update the review owner peaches
-  await calcPeaches(reviewOwner);
+  if(rating > 0)
+  {
+    await calcPeaches(reviewOwner);
+  }
+  
 
   const reviews = await Reviews.find({ product })
     .populate("user")
