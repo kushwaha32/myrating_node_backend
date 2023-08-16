@@ -80,12 +80,13 @@ const sendOtpToMailAndSaveToCollection = async (email, otp, res, next) => {
   valid for 10 minutes only.\n\n My Rating Team`;
   try {
     // send otp to email
-    await sendEmail({
+     await sendEmail({
       email: email,
       subject: "Your OTP for login",
       message,
     });
-
+    
+   
     // create the collection
     const emailOtp = new EmailOtp({ email: email, otp: otp });
 
@@ -95,6 +96,7 @@ const sendOtpToMailAndSaveToCollection = async (email, otp, res, next) => {
     // save the collection
     await emailOtp.save();
   } catch (error) {
+    console.log(error)
     return next(new AppError("OTP does not send please try latter", 500));
   }
 };

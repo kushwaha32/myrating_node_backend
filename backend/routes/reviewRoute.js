@@ -7,8 +7,13 @@ const {
   convertProductSlug,
 } = require("../controllers/reviewController");
 const { protect, restrictTo } = require("../controllers/authController");
+const reviewAgreeRoute = require("./reviewAgreeRoute");
+const reviewDisAgreeRoute = require("./reviewDisAgreeRoute");
 
 const router = express.Router({ mergeParams: true });
+
+router.use("/:reviewId/reviewAgree", reviewAgreeRoute)
+router.use("/:reviewId/reviewDisAgree", reviewDisAgreeRoute)
 
 // routes
 

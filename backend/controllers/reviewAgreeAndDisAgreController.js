@@ -160,3 +160,44 @@ exports.createReviewDisAgree = catchAsync(async (req, res, next) => {
     },
   });
 });
+
+
+/////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////
+
+// METHOD          GET
+// ROUTE           /api/v1/review/:reviewId/review-agree
+// ACCESS          PUBLIC
+// DESC            Return all reviewAgree based on review id
+
+exports.getAllReviewAgree = catchAsync(async(req, res, next) => {
+       const reviewAgree = await ReviewAgree.find({review: req.params.reviewId});
+       
+       res.status(200).json({
+        status: "success",
+        data: {
+          reviewAgree
+        }
+       })
+})
+
+
+
+////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////
+
+// METHOD             GET
+// ROUTE              /api/v1/review/:reviewId/reviewDisAgree
+// DESC               Returns all the ReviewDisAgree based on the review
+// ACCESS             PUBLIC
+
+exports.getAllReviewDisAgree = catchAsync(async(req, res, next) => {
+      const reviewDisAgree = await ReviewDisAgree.find({review: req.params.reviewId});
+
+      res.status(200).json({
+        status: "success",
+        data: {
+          reviewDisAgree
+        }
+      })
+})
