@@ -31,8 +31,8 @@ app.use(express.static(`${__dirname}/public`));
 // 1) GLOBAL MIDDLEWARES
 // prevent cross site scription
 const corsOpts = {
-  origin: "http://localhost:3000",
-  // origin: "https://myratings.in",
+  // origin: "http://localhost:3000",
+  origin: ["http://localhost:3000", "https://myratings.in"],
   credentials: true,
   methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   allowedHeaders: [
@@ -46,7 +46,7 @@ const corsOpts = {
   ],
 };
 
-app.use(cors(corsOpts));
+app.use(cors());
 
 app.use(helmet());
 

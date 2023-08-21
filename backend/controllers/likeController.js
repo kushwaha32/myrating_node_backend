@@ -1,7 +1,11 @@
 const Like = require("../models/likeModel");
 const Product = require("../models/productModel");
+const { io } = require("../server");
+
+
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+
 
 
 
@@ -20,7 +24,7 @@ exports.getReview = catchAsync(async(req, res, next) => {
     
       const product = await Product.findOne({productNameSlug: req.body.product})
       const likes = await Like.find({product: product._id});
-     
+    
 
       res.status(200).json({
         status: "success",
@@ -63,15 +67,16 @@ exports.createLike = catchAsync(async (req, res, next) => {
   newLike = await newLike.save();
   newLike = await newLike.populate("product");
   
-  const likes = await Like.find({ product: req.body.product });
-  const products = await Product.find().sort("-createdAt");
+  const likes = await Like.find({ product: req.body.product }).populate({
+    path: "product",
+    select: "productNameSlug",
+  });
+  
   // send response
   res.status(201).json({
     status: "success",
     data: {
-      likes,
-      newLike,
-      products,
+      likes
     },
   });
 });
@@ -95,31 +100,18 @@ exports.deleteLike = catchAsync(async (req, res, next) => {
   // remove the like
   await Like.findByIdAndDelete(like._id);
 
-  // find the product by id
-  const product = await Product.findOne({ _id: req.body.product });
-
-  // reduct like by one
-
-  let totalLike = product.totalLikes - 1;
-
-  // update the total like
-
-  const updatedProduct = await Product.findByIdAndUpdate(
-    req.body.product,
-    { totalLikes: totalLike },
-    { new: true, runValidators: true }
-  );
 
   // send response
-  const likes = await Like.find({ product: req.body.product });
-  const products = await Product.find().sort("-createdAt");
+  const likes = await Like.find({ product: req.body.product }).populate({
+    path: "product",
+    select: "productNameSlug",
+  });
+ 
 
   res.status(200).json({
     status: "success",
     data: {
       likes,
-      products,
-      updatedProduct,
     },
   });
 });

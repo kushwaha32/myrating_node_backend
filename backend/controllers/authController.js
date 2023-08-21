@@ -50,11 +50,14 @@ const validateEmailOrContact = async (req) => {
   const { contactOrEmail } = req.body;
   try {
     // check if email or contact number is provided
-    if (!contactOrEmail)
-      return next(new AppError("Please provide your email or contact number"));
+    if (!contactOrEmail){
+      //  return next(new AppError("Please provide your email or contact number"));
+      return next(new AppError("Please provide your contact number"));
+    }
+     
 
     // check if email or contact number exist
-    const userWithEmail = await User.findOne({ email: contactOrEmail });
+    // const userWithEmail = await User.findOne({ email: contactOrEmail });
 
     const userWithContactNO = await User.findOne({
       contactNumber: contactOrEmail,
@@ -68,7 +71,8 @@ const validateEmailOrContact = async (req) => {
       specialChars: false,
     });
 
-    return { otp, userWithEmail, userWithContactNO };
+    // return { otp, userWithEmail, userWithContactNO };
+    return { otp, userWithContactNO };
   } catch (error) {
     return next("Please prvide the correct field", 401);
   }
@@ -80,13 +84,12 @@ const sendOtpToMailAndSaveToCollection = async (email, otp, res, next) => {
   valid for 10 minutes only.\n\n My Rating Team`;
   try {
     // send otp to email
-     await sendEmail({
+    await sendEmail({
       email: email,
       subject: "Your OTP for login",
       message,
     });
-    
-   
+
     // create the collection
     const emailOtp = new EmailOtp({ email: email, otp: otp });
 
@@ -96,7 +99,7 @@ const sendOtpToMailAndSaveToCollection = async (email, otp, res, next) => {
     // save the collection
     await emailOtp.save();
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return next(new AppError("OTP does not send please try latter", 500));
   }
 };
@@ -238,7 +241,6 @@ exports.otpVerify = catchAsync(async (req, res, next) => {
 
   user = await user.save({ validateBeforeSave: false });
 
- 
   //  delete the opt
   await MobileOtp.deleteMany({
     contactNumber: rightOtpFind.contactNumber,
@@ -336,18 +338,18 @@ exports.login = catchAsync(async (req, res, next) => {
 // login via OTP
 
 exports.loginViaOtp = catchAsync(async (req, res, next) => {
-  const { otp, userWithEmail, userWithContactNO } =
+  const { otp, userWithContactNO } =
     await validateEmailOrContact(req);
 
   // if user send the email id
-  if (userWithEmail) {
-    await sendOtpToMailAndSaveToCollection(userWithEmail.email, otp, res, next);
+  // if (userWithEmail) {
+  //   await sendOtpToMailAndSaveToCollection(userWithEmail.email, otp, res, next);
 
-    return res.status(200).json({
-      status: "success",
-      message: "Otp has send to your Email successfully",
-    });
-  }
+  //   return res.status(200).json({
+  //     status: "success",
+  //     message: "Otp has send to your Email successfully",
+  //   });
+  // }
 
   // if user send the contact number
   if (userWithContactNO) {
@@ -557,18 +559,18 @@ exports.restrictTo = (...roles) => {
 // forget password
 
 exports.forgetPassword = catchAsync(async (req, res, next) => {
-  const { otp, userWithEmail, userWithContactNO } =
+  const { otp, userWithContactNO } =
     await validateEmailOrContact(req);
 
   // if user send the email id
-  if (userWithEmail) {
-    await sendOtpToMailAndSaveToCollection(userWithEmail.email, otp, res, next);
+  // if (userWithEmail) {
+  //   await sendOtpToMailAndSaveToCollection(userWithEmail.email, otp, res, next);
 
-    return res.status(200).json({
-      status: "success",
-      message: "Otp has send to your Email successfully",
-    });
-  }
+  //   return res.status(200).json({
+  //     status: "success",
+  //     message: "Otp has send to your Email successfully",
+  //   });
+  // }
 
   // if user send the contact number
   if (userWithContactNO) {
@@ -897,12 +899,12 @@ exports.brandSignUP = catchAsync(async (req, res, next) => {
   }
 
   // generate the Email otp
-  const emailOtp = otpGenerator.generate(6, {
-    digits: true,
-    lowerCaseAlphabets: false,
-    upperCaseAlphabets: false,
-    specialChars: false,
-  });
+  // const emailOtp = otpGenerator.generate(6, {
+  //   digits: true,
+  //   lowerCaseAlphabets: false,
+  //   upperCaseAlphabets: false,
+  //   specialChars: false,
+  // });
   // generate the contact number otp
   const contactOtp = otpGenerator.generate(6, {
     digits: true,
@@ -913,7 +915,7 @@ exports.brandSignUP = catchAsync(async (req, res, next) => {
 
   // if user send the email id
 
-  await sendOtpToMailAndSaveToCollection(email, emailOtp, res, next);
+  // await sendOtpToMailAndSaveToCollection(email, emailOtp, res, next);
 
   // if user send the contact number
 
@@ -921,8 +923,7 @@ exports.brandSignUP = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message:
-      "Otp has been send to your provided Email Adddress and Contact Number",
+    message: "Otp has been send successfully",
   });
 });
 
@@ -1031,23 +1032,26 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
   });
 
   // find the contact number inside the email otp collection
-  const emailOtpHolder = await EmailOtp.find({
-    email: email,
-  });
+  // const emailOtpHolder = await EmailOtp.find({
+  //   email: email,
+  // });
 
   // check if the contact no does not exist send error
-  if (mobileOtpHoder.length === 0 && emailOtpHolder.length === 0) {
+  // if (mobileOtpHoder.length === 0 && emailOtpHolder.length === 0) {
+  //   return next(new AppError("Opt is Expired", 400));
+  // }
+  if (mobileOtpHoder.length === 0) {
     return next(new AppError("Opt is Expired", 400));
   }
 
   //  check very first Email otp
-  const rightEmailOtpFind = emailOtpHolder[emailOtpHolder.length - 1];
+  // const rightEmailOtpFind = emailOtpHolder[emailOtpHolder.length - 1];
 
   // check very first contact otp
   const rightContactOtpFind = mobileOtpHoder[mobileOtpHoder.length - 1];
 
   // validate the Email otp by comparing
-  const validEmailOpt = await bcrypt.compare(emailOtp, rightEmailOtpFind.otp);
+  // const validEmailOpt = await bcrypt.compare(emailOtp, rightEmailOtpFind.otp);
 
   // validata the contact otp by comparing
   const validContactOpt = await bcrypt.compare(
@@ -1056,12 +1060,15 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
   );
 
   // check if contact is not valid or the otp is not valid
-  if (
-    rightEmailOtpFind.email !== email ||
-    !validEmailOpt ||
-    rightContactOtpFind.contactNumber !== contactNumber ||
-    !validContactOpt
-  ) {
+  // if (
+  //   rightEmailOtpFind.email !== email ||
+  //   !validEmailOpt ||
+  //   rightContactOtpFind.contactNumber !== contactNumber ||
+  //   !validContactOpt
+  // ) {
+  //   return next(new AppError("Invalid Otp", 400));
+  // }
+  if (rightContactOtpFind.contactNumber !== contactNumber || !validContactOpt) {
     return next(new AppError("Invalid Otp", 400));
   }
 
@@ -1072,7 +1079,7 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
     verifyBusinessOtp: true,
     role: "business",
   });
-  
+
   userNoProfile = await userNoProfile.save({ validateBeforeSave: false });
   const brandSlug = req.body.brandName.trim().split(" ").join("-");
   const brandProfile = await BrandProfile.create({
@@ -1094,9 +1101,9 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
   ).populate("brandProfile");
 
   //  delete the opt
-  await EmailOtp.deleteMany({
-    email: rightEmailOtpFind.email,
-  });
+  // await EmailOtp.deleteMany({
+  //   email: rightEmailOtpFind.email,
+  // });
 
   //  delete the opt
   await MobileOtp.deleteMany({

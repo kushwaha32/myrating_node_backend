@@ -17,14 +17,10 @@ router
   .route("/hasProduct")
   .get(protect, restrictTo("business"), getCategoryIfHasProduct);
 
-  // public route
-  router
-  .route("/public/hasProduct")
-  .get(getCategoryIfHasProduct);
+// public route
+router.route("/public/hasProduct").get(getCategoryIfHasProduct);
 
-  router
-  .route("/category/public/:slug")
-  .get(protect, restrictTo("business"), getProductsFromCategory);
+router.route("/category/public/:slug").get(getProductsFromCategory);
 
 router.route("/").get(getIndustrySubCat);
 

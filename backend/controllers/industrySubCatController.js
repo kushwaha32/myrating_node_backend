@@ -119,13 +119,25 @@ exports.getCategoryIfHasProduct = catchAsync(async (req, res) => {
 // @DESC              get the products from category
 
 exports.getProductsFromCategory = catchAsync(async (req, res) => {
+ 
   const category = await IndustrySubCategory.findOne({
     slug: req.params.slug,
   }).populate({ path: "products", options: { virtuals: true } });
 
-  const filteredProduct = category.products.filter(
-    (currPro) => currPro.user == req.user.id
-  );
+  let filteredProduct;
+  if (req?.user?.id) {
+    filteredProduct = category.products.filter(
+      (currPro) => currPro.user == req.user.id
+    );
+  } else {
+    const brand = await BrandProfile.findOne({
+      brandNameSlug: req?.query?.brand_slug,
+    });
+   
+    filteredProduct = category.products.filter(
+      (currPro) => currPro.user.equals(brand.user)
+    );
+  }
 
   res.status(200).json({
     status: "success",
