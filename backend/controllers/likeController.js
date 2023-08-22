@@ -1,6 +1,5 @@
 const Like = require("../models/likeModel");
 const Product = require("../models/productModel");
-const { io } = require("../server");
 
 
 const AppError = require("../utils/appError");
