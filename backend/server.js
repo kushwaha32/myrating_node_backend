@@ -9,13 +9,14 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "https://myratings.in",
-    // origin: ["http://localhost:3000", "https://myratings.in"],
+    // origin: "http://localhost:3000",
+    origin:  "https://myratings.in",
     credentials: true,
     methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
     allowedHeaders: [
       "Access-Control-Allow-Headers",
-      "Origin,Accept",
+      "Origin",
+      "Accept",
       "X-Requested-With",
       "authorization",
       "Content-Type",
@@ -24,7 +25,6 @@ const io = new Server(server, {
     ],
   },
 });
-
 // handling the uncaught exception
 
 process.on("uncaughtException", (err) => {

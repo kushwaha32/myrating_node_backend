@@ -31,13 +31,14 @@ app.use(express.static(`${__dirname}/public`));
 // 1) GLOBAL MIDDLEWARES
 // prevent cross site scription
 const corsOpts = {
-   origin: "https://myratings.in",
-  // origin: ["http://localhost:3000", "https://myratings.in"],
+  // origin: "http://localhost:3000",
+  origin: "https://myratings.in",
   credentials: true,
   methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   allowedHeaders: [
     "Access-Control-Allow-Headers",
-    "Origin,Accept",
+    "Origin",
+    "Accept",
     "X-Requested-With",
     "authorization",
     "Content-Type",
@@ -46,7 +47,7 @@ const corsOpts = {
   ],
 };
 
-app.use(cors());
+app.use(cors(corsOpts));
 
 app.use(helmet());
 
@@ -82,7 +83,7 @@ app.use(express.static(`${__dirname}/public`));
 // user route
 
 // bucket permision
-app.use("/api/v1/s3bucktet", bucketImgRoute)
+app.use("/api/v1/s3bucktet", bucketImgRoute);
 
 app.use("/api/v1/user", userRoutes);
 
@@ -90,7 +91,7 @@ app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/product", productRoutes);
 
 // brand product route
-app.use("/api/v1/BrandProduct", brandProductRoute)
+app.use("/api/v1/BrandProduct", brandProductRoute);
 
 // review route
 app.use("/api/v1/review", reviewRoutes);
