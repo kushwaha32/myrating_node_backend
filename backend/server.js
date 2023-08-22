@@ -8,20 +8,21 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server, {
   pingTimeout: 60000,
-  // cors: {
-  //   origin: ["http://localhost:3000", "https://myratings.in"],
-  //   credentials: true,
-  //   methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
-  //   allowedHeaders: [
-  //     "Access-Control-Allow-Headers",
-  //     "Origin,Accept",
-  //     "X-Requested-With",
-  //     "authorization",
-  //     "Content-Type",
-  //     "Access-Control-Request-Method",
-  //     "Access-Control-Request-Headers",
-  //   ],
-  // },
+  cors: {
+    origin: "https://myratings.in",
+    // origin: ["http://localhost:3000", "https://myratings.in"],
+    credentials: true,
+    methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: [
+      "Access-Control-Allow-Headers",
+      "Origin,Accept",
+      "X-Requested-With",
+      "authorization",
+      "Content-Type",
+      "Access-Control-Request-Method",
+      "Access-Control-Request-Headers",
+    ],
+  },
 });
 
 // handling the uncaught exception
@@ -48,23 +49,22 @@ io.on("connection", (socket) => {
     console.log("user disconnected");
   });
   // like socket event
-  socket.on("like-f", data => {
+  socket.on("like-f", (data) => {
     io.emit("likes-b", data);
-  })
-  socket.on("likes-d-f", data => {
-    io.emit("likes-d-b", data)
-  })
+  });
+  socket.on("likes-d-f", (data) => {
+    io.emit("likes-d-b", data);
+  });
 
   // review socket event
-  socket.on("review-f", data => {
+  socket.on("review-f", (data) => {
     console.log(data);
     io.emit("review-b", data);
-  })
-  socket.on("review-d-f", data => {
-    io.emit("review-d-b", data)
-  })
+  });
+  socket.on("review-d-f", (data) => {
+    io.emit("review-d-b", data);
+  });
 });
-
 
 // handling the unhandled promiss rejection
 process.on("unhandledRejection", (err) => {
@@ -74,11 +74,6 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
   });
 });
-
-
-
-
-
 
 // const app = require("./app");
 // const dotenv = require("dotenv");
@@ -100,10 +95,6 @@ process.on("unhandledRejection", (err) => {
 // const newServer = app.listen(process.env.PORT, () => {
 //   console.log(`Server is running on ${process.env.PORT}`);
 // });
-
-
-
-
 
 // // handling the unhandled promise rejection
 // process.on("unhandledRejection", (err) => {
