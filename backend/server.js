@@ -9,19 +9,18 @@ const { Server } = require("socket.io");
 const io = new Server(server, {
   pingTimeout: 60000,
   cors: {
-    // origin: "http://localhost:3000",
-    origin: "*",
-    // credentials: true,
-    // methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
-    // allowedHeaders: [
-    //   "Access-Control-Allow-Headers",
-    //   "Origin,Accept",
-    //   "X-Requested-With",
-    //   "authorization",
-    //   "Content-Type",
-    //   "Access-Control-Request-Method",
-    //   "Access-Control-Request-Headers",
-    // ],
+    origin: ["http://localhost:3000", "https://myratings.in"],
+    credentials: true,
+    methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: [
+      "Access-Control-Allow-Headers",
+      "Origin,Accept",
+      "X-Requested-With",
+      "authorization",
+      "Content-Type",
+      "Access-Control-Request-Method",
+      "Access-Control-Request-Headers",
+    ],
   },
 });
 
