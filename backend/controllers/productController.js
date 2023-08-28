@@ -42,7 +42,7 @@ exports.getSubCategoryId = catchAsync(async (req, res, next) => {
     const subCat = await IndustrySubCategory.findOne({
       slug: req.query.subCategorySlug,
     });
-  
+
     delete req.query.subCategorySlug;
     req.query.subCategory = subCat._id;
   }
@@ -55,12 +55,12 @@ exports.getSubCategoryId = catchAsync(async (req, res, next) => {
 // DESC       return all products
 
 exports.getAllProduct = catchAsync(async (req, res, next) => {
-  const newQuery = {...req.query}
+  const newQuery = { ...req.query };
   let brandQuery = BrandProfile.find();
-  
+
   //  create user searched city history
-  if(req.query.hasOwnProperty("city")){
-      await SearchedCity.create({ userIp: req.ip, city: req.query.city });
+  if (req.query.hasOwnProperty("city")) {
+    await SearchedCity.create({ userIp: req.ip, city: req.query.city });
   }
 
   // get the brand
@@ -122,8 +122,7 @@ exports.getAllProduct = catchAsync(async (req, res, next) => {
   const page = req.query.page * 1 || 1;
   const limit = 5;
   const skip = (page - 1) * limit;
-  const  brand = await brandQuery.skip(skip).limit(limit).populate("user");
- 
+  const brand = await brandQuery.skip(skip).limit(limit).populate("user");
 
   // get all the product
   let products = new APIFeatures(query, req.query)
@@ -133,14 +132,14 @@ exports.getAllProduct = catchAsync(async (req, res, next) => {
     .paginate();
 
   products = await products.query.populate("user").populate("reviews");
-  if(Object.keys(newQuery).length > 0){
+  if (Object.keys(newQuery).length > 0) {
     products = [{ products: products, brand: brand }];
   }
-  
+
   // send the res  with all the product
   res.status(200).json({
     status: "success",
-    products
+    products,
   });
 });
 
@@ -200,6 +199,9 @@ exports.getSingleProduct = catchAsync(async (req, res, next) => {
     productNameSlug: productId,
   }).populate({
     path: "reviews",
+    options: {
+      sort: { createdAt: -1 }, // 1 for ascending order, -1 for descending
+    },
   });
 
   // send the response
@@ -329,6 +331,3 @@ exports.uploadImage = catchAsync(async (req, res, next) => {
 
   res.status(200).json({ url: imageUrl });
 });
-
-
-

@@ -1,15 +1,8 @@
 const Like = require("../models/likeModel");
 const Product = require("../models/productModel");
 
-
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
-
-
-
-
-
-
 
 //////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////
@@ -18,23 +11,19 @@ const catchAsync = require("../utils/catchAsync");
 // @ROUTE             /product/:productId/like
 // @DESC              create a new review
 
-exports.getReview = catchAsync(async(req, res, next) => {
-      if(!req.body.product) req.body.product = req.params.productId
-    
-      const product = await Product.findOne({productNameSlug: req.body.product})
-      const likes = await Like.find({product: product._id});
-    
+exports.getReview = catchAsync(async (req, res, next) => {
+  if (!req.body.product) req.body.product = req.params.productId;
 
-      res.status(200).json({
-        status: "success",
-        data:{
-          likes
-        }
-      })
-})
+  const product = await Product.findOne({ productNameSlug: req.body.product });
+  const likes = await Like.find({ product: product._id });
 
-
-
+  res.status(200).json({
+    status: "success",
+    data: {
+      likes,
+    },
+  });
+});
 
 /////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////
@@ -65,17 +54,17 @@ exports.createLike = catchAsync(async (req, res, next) => {
 
   newLike = await newLike.save();
   newLike = await newLike.populate("product");
-  
+
   const likes = await Like.find({ product: req.body.product }).populate({
     path: "product",
     select: "productNameSlug",
   });
-  
+
   // send response
   res.status(201).json({
     status: "success",
     data: {
-      likes
+      likes,
     },
   });
 });
@@ -99,13 +88,11 @@ exports.deleteLike = catchAsync(async (req, res, next) => {
   // remove the like
   await Like.findByIdAndDelete(like._id);
 
-
   // send response
   const likes = await Like.find({ product: req.body.product }).populate({
     path: "product",
     select: "productNameSlug",
   });
- 
 
   res.status(200).json({
     status: "success",
@@ -127,7 +114,7 @@ exports.getUserFavourites = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
 
   const favorites = await Like.find({ user: userId }).populate("product");
-  
+
   res.status(200).json({
     status: "success",
     length: favorites.length,
