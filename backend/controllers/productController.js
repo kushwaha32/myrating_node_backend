@@ -197,11 +197,6 @@ exports.getSingleProduct = catchAsync(async (req, res, next) => {
   // get product based on id
   const product = await Product.findOne({
     productNameSlug: productId,
-  }).populate({
-    path: "reviews",
-    options: {
-      sort: { createdAt: -1 }, // 1 for ascending order, -1 for descending
-    },
   });
 
   // send the response
@@ -209,7 +204,6 @@ exports.getSingleProduct = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       product,
-      reviews: product.reviews,
     },
   });
 });

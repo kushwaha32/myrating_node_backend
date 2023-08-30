@@ -5,6 +5,8 @@ const {
   updateReview,
   deleteReview,
   convertProductSlug,
+  avgRatingProduct,
+  rDistribution,
 } = require("../controllers/reviewController");
 const { protect, restrictTo } = require("../controllers/authController");
 const reviewAgreeRoute = require("./reviewAgreeRoute");
@@ -12,8 +14,8 @@ const reviewDisAgreeRoute = require("./reviewDisAgreeRoute");
 
 const router = express.Router({ mergeParams: true });
 
-router.use("/:reviewId/reviewAgree", reviewAgreeRoute)
-router.use("/:reviewId/reviewDisAgree", reviewDisAgreeRoute)
+router.use("/:reviewId/reviewAgree", reviewAgreeRoute);
+router.use("/:reviewId/reviewDisAgree", reviewDisAgreeRoute);
 
 // routes
 
@@ -28,5 +30,11 @@ router.route("/:reviewId").patch(protect, restrictTo("user"), updateReview);
 
 // delete a review
 router.route("/:reviewId").delete(protect, restrictTo("user"), deleteReview);
+
+// average rating
+router.route("/avgRating").get(avgRatingProduct);
+
+// rating distribution
+router.route("/rDistribution").get(rDistribution);
 
 module.exports = router;

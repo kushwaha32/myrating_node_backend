@@ -176,7 +176,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const productOwner = populatedReview.product.user;
   // update the product owner peaches
 
-  if (productOwner && (rating > 0)) {
+  if (productOwner && rating > 0) {
     await calcPeaches(productOwner);
   }
 
@@ -184,11 +184,9 @@ exports.createReview = catchAsync(async (req, res, next) => {
   const reviewOwner = populatedReview.user;
 
   // update the review owner peaches
-  if(rating > 0)
-  {
+  if (rating > 0) {
     await calcPeaches(reviewOwner);
   }
-  
 
   const reviews = await Reviews.find({ product })
     .populate("user")
@@ -318,6 +316,79 @@ exports.deleteReview = catchAsync(async (req, res, next) => {
       review: reviews,
       products,
       user: reviewedUser,
+    },
+  });
+});
+
+// ROUTE        /review/avgRating || /product/:productSlug/review/avgRating
+// METHOD       GET
+// DESC         gives the average ratings of product
+
+exports.avgRatingProduct = catchAsync(async (req, res) => {
+  // get the product
+  const product = await Product.findOne({
+    productNameSlug: req.params.productSlug,
+  }).select("_id");
+
+  const stats = await Reviews.aggregate([
+    { $match: { product: product._id } },
+
+    {
+      $group: {
+        _id: "$product",
+        avgRating: { $avg: "$rating" },
+        nRating: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        product: "$_id",
+        avgRating: "$avgRating",
+        nRating: "$nRating",
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      avgRating: stats,
+    },
+  });
+});
+
+// ROUTE         /review/rDistribution     || /product/:productSlug/review/rDistribution
+// METHOD        GET
+// DESCRIPTION   get the rating distribution
+
+exports.rDistribution = catchAsync(async (req, res) => {
+  // get the product
+  const product = await Product.findOne({
+    productNameSlug: req.params.productSlug,
+  }).select("-subCategory");
+
+  const stats = await Reviews.aggregate([
+    { $match: { product: product._id } },
+    {
+      $group: {
+        _id: "$rating",
+        count: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        count: 1,
+        rating: "$_id",
+        _id: 0,
+      },
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      rDistribution: stats,
     },
   });
 });

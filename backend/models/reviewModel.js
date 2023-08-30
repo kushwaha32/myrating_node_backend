@@ -30,11 +30,11 @@ const reviewSchema = new mongoose.Schema(
     },
     nAgree: {
       type: Number,
-      default: 0
+      default: 0,
     },
     nDisAgree: {
       type: Number,
-      default: 0
+      default: 0,
     },
     active: {
       type: Boolean,
@@ -93,7 +93,7 @@ reviewSchema.statics.calcAverageRating = async function (productId) {
     // update the average inside product
     await Product.findByIdAndUpdate(stats[0]._id, {
       nRating: 0,
-      averageRating: 1,
+      averageRating: 0,
     });
   }
 };
