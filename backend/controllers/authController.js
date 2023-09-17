@@ -12,6 +12,7 @@ const User = require("../models/userModel");
 const MobileOtp = require("../models/mobileOtpModel");
 const EmailOtp = require("../models/emailOtpModel");
 const BrandProfile = require("../models/brandProfileModel");
+const UserProfile = require("../models/userProfileModel");
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -50,11 +51,10 @@ const validateEmailOrContact = async (req) => {
   const { contactOrEmail } = req.body;
   try {
     // check if email or contact number is provided
-    if (!contactOrEmail){
+    if (!contactOrEmail) {
       //  return next(new AppError("Please provide your email or contact number"));
       return next(new AppError("Please provide your contact number"));
     }
-     
 
     // check if email or contact number exist
     // const userWithEmail = await User.findOne({ email: contactOrEmail });
@@ -231,17 +231,47 @@ exports.otpVerify = catchAsync(async (req, res, next) => {
     return next(new AppError("OTP is expired Or Invalid!", 400));
   }
 
-  // generate a random email
-  const fakeEmail = `testMyrating${Math.floor(Math.random() * 100)}@gmail.com`;
+  const { data } = req.body;
   // save the user inside databae
   let user = new User({
     contactNumber: req.body.contactNumber,
-    email: fakeEmail,
+    email: data.email,
   });
 
   user = await user.save({ validateBeforeSave: false });
 
-  //  delete the opt
+  ////////////////////////////////////////////////////////////////
+  //////////-------- Create user profile ----------///////////////
+  ///////////////////////////////////////////////////////////////
+
+  const getProfession = data?.profession?.map((curr) => curr?.value);
+  const locationData = {
+    type: "Point", // Default value for type
+    coordinates: data.coordinates, // Default coordinates
+    city: data.city,
+    state: data.state,
+    country: data.country,
+  };
+
+  /////////////////////////////////////////////////////////////
+  /////---- Create user profession ---- //////////////////////
+  ///////////////////////////////////////////////////////////
+
+  const userProfession = await UserProfile.create({
+    user: user._id,
+    name: data.name,
+    proffession: getProfession,
+    dob: data.dob,
+    location: locationData,
+    gender: data.gender,
+  });
+
+  // update the user
+  await User.findOneAndUpdate(user._id, { userProfile: userProfession._id });
+
+  user = await User.findById(user._id);
+  console.log(user);
+  //  delete the otp
   await MobileOtp.deleteMany({
     contactNumber: rightOtpFind.contactNumber,
   });
@@ -338,8 +368,7 @@ exports.login = catchAsync(async (req, res, next) => {
 // login via OTP
 
 exports.loginViaOtp = catchAsync(async (req, res, next) => {
-  const { otp, userWithContactNO } =
-    await validateEmailOrContact(req);
+  const { otp, userWithContactNO } = await validateEmailOrContact(req);
 
   // if user send the email id
   // if (userWithEmail) {
@@ -559,8 +588,7 @@ exports.restrictTo = (...roles) => {
 // forget password
 
 exports.forgetPassword = catchAsync(async (req, res, next) => {
-  const { otp, userWithContactNO } =
-    await validateEmailOrContact(req);
+  const { otp, userWithContactNO } = await validateEmailOrContact(req);
 
   // if user send the email id
   // if (userWithEmail) {

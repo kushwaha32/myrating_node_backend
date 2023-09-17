@@ -66,6 +66,10 @@ const userSchema = new mongoose.Schema(
       default: false,
       select: false,
     },
+    verified: {
+      type: Boolean,
+      default: false,
+    },
     passwordChangedAt: Date,
     passwordResetToken: String,
     passwordResetExpires: Date,
@@ -106,7 +110,7 @@ userSchema.pre(/^find/, function (next) {
     .populate("brandProfile")
     .populate("userProfile")
     .populate("proffession");
-   
+
   next();
 });
 
@@ -159,8 +163,6 @@ userSchema.methods.createPasswordResetToken = function () {
     .createHash("sha256")
     .update(resetToken)
     .digest("hex");
-
-
 
   // token expired time
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;

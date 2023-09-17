@@ -5,19 +5,21 @@ const userProfileSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      unique: true
+      unique: true,
     },
     name: {
       type: String,
       required: [true, "Please provide your name"],
     },
     userImg: {
-      type: String
+      type: String,
+    },
+    verificationId: {
+      type: String,
     },
     proffession: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "UserProffession",
-      required: [true, "Please select your profession"],
     },
     dob: {
       type: String,
@@ -35,7 +37,15 @@ const userProfileSchema = new mongoose.Schema(
         type: [Number],
         required: true,
       },
-      address: {
+      city: {
+        type: String,
+        required: true,
+      },
+      state: {
+        type: String,
+        required: true,
+      },
+      country: {
         type: String,
         required: true,
       },

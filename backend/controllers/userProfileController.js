@@ -30,7 +30,6 @@ exports.getUserProfile = catchAsync(async (req, res, next) => {
 // @DESC        only authenticate user can create profile
 
 exports.createUserProfile = catchAsync(async (req, res, next) => {
-
   let profileImg;
   if (req.body.image) {
     profileImg = req.body.image;
@@ -79,7 +78,7 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
   }
 
   const upLocation = JSON.parse(req.body.location);
-   
+
   //   update the authenticate user profile
   let updatedUserProfile = await UserProfile.findByIdAndUpdate(
     profile._id,
@@ -97,7 +96,7 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
     },
     { new: true, runValidators: true }
   );
- 
+
   const user = await User.findOne({ _id: req.user.id })
     .populate("userProfile")
     .populate("proffession");
@@ -105,8 +104,41 @@ exports.updateUserProfile = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     message: "Profile updated successfull",
-    data: {user},
+    data: { user },
   });
 });
 
+// METHOD              PATCH
+// ROUTE               api/v1/profile/updateProfileImg
+// ACCESS              PRIVATE
+// DESC                update user profile image
 
+exports.updateUserProfileImage = catchAsync(async (req, res) => {
+  await UserProfile.findByIdAndUpdate(req.body.id, {
+    userImg: req.body.image,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Profile image uploaded successfully!",
+  });
+});
+
+// METHOD              PATCH
+// ROUTE               api/v1/profile/updateDocumentId
+// ACCESS              PRIVATE
+// DESC                update the document id
+
+exports.updateDocumentId = catchAsync(async (req, res) => {
+  await UserProfile.findByIdAndUpdate(req.body.id, {
+    verificationId: JSON.stringify({
+      documentType: req.body.documentType,
+      image: req.body.image,
+    }),
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Document Id uploaded successfully!",
+  });
+});
