@@ -13,7 +13,7 @@ const brandProfileSchema = new mongoose.Schema(
     },
     brandNameSlug: {
       type: String,
-      required: true,
+      // required: true,
     },
     brandImage: {
       type: String,
@@ -22,7 +22,7 @@ const brandProfileSchema = new mongoose.Schema(
     registeredAs: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "RegisteredAs",
-      required: true,
+      // required: true,
     },
 
     industry: {
@@ -35,15 +35,15 @@ const brandProfileSchema = new mongoose.Schema(
         type: String,
         default: "Point",
         enum: ["Point"],
-        required: [true, "please provide the location"],
+        // required: [true, "please provide the location"],
       },
       coordinates: {
         type: [Number],
-        required: true,
+        // required: true,
       },
       address: {
         type: String,
-        required: true,
+        // required: true,
       },
     },
     acceptTAndC: {

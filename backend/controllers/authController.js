@@ -1103,22 +1103,21 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
   //  check if user allready exist in user colloction
   let userNoProfile = new User({
     contactNumber: contactNumber,
-    email: email,
+    email: req.body.data.email,
     verifyBusinessOtp: true,
     role: "business",
   });
+  console.log(req.body);
 
   userNoProfile = await userNoProfile.save({ validateBeforeSave: false });
-  const brandSlug = req.body.brandName.trim().split(" ").join("-");
+  const brandSlug = req.body.data.companyName.trim().split(" ").join("-");
   const brandProfile = await BrandProfile.create({
     user: userNoProfile._id,
-    brandName: req.body.brandName,
+    brandName: req.body.data.companyName,
     brandNameSlug: brandSlug,
-    registeredAs: req.body.registeredAs,
-    industry: req.body.industry,
-    location: JSON.parse(req.body.location),
   });
 
+  userNoProfile = await userNoProfile.save({ validateBeforeSave: false });
   let user = await User.findByIdAndUpdate(
     brandProfile.user,
     { brandProfile: brandProfile._id },
