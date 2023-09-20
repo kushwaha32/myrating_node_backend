@@ -76,6 +76,7 @@ app.use(xssClean());
 app.use(hpp());
 
 // serving the static files
+
 app.use(express.static(`${__dirname}/public`));
 
 // routes
