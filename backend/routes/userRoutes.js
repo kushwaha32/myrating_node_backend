@@ -70,11 +70,13 @@ router.patch(
 
 // update password
 
-router.patch(
-  "/updateMyPassword",
-  authController.protect,
-  authController.updateMyPassword
-);
+router
+  .route("/updateMyPassword")
+  .patch(
+    authController.protect,
+    authController.restrictTo("user", "business"),
+    authController.updateMyPassword
+  );
 
 // update the credentials (email and contactNumber)
 
@@ -86,7 +88,16 @@ router
     authController.updateContactInfo
   );
 
-
+//////////////////////////////////////////////////////////
+/////-- check user allready created password route --////
+////////////////////////////////////////////////////////
+router
+  .route("/check_has_password")
+  .get(
+    authController.protect,
+    authController.restrictTo("user"),
+    authController.checkUserHasPassword
+  );
 
 // update user
 

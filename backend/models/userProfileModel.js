@@ -17,6 +17,9 @@ const userProfileSchema = new mongoose.Schema(
     verificationId: {
       type: String,
     },
+    selfiImg: {
+      type: String,
+    },
     proffession: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "UserProffession",
@@ -53,6 +56,26 @@ const userProfileSchema = new mongoose.Schema(
     gender: {
       type: String,
       required: [true, "Please select your gender"],
+    },
+    agreeAndDisAgreeOnReview: { type: Boolean, default: true },
+    allowPersonalizeAdds: { type: Boolean, default: true },
+    allowToSearchMyAccount: { type: Boolean, default: true },
+    newOffers: { type: Boolean, default: true },
+    nonPersonalizedAdd: { type: Boolean, default: true },
+    plateFormUpdateAnnounce: { type: Boolean, default: true },
+    preferences: {
+      type: String,
+    },
+    proPrivacy: { type: Boolean, default: true },
+    reviewAndVisibility: { type: Boolean, default: true },
+    shareLocationToNearProfile: { type: Boolean, default: true },
+    submitVerification: {
+      type: Boolean,
+      default: false,
+    },
+    verified: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }

@@ -133,12 +133,40 @@ exports.updateDocumentId = catchAsync(async (req, res) => {
   await UserProfile.findByIdAndUpdate(req.body.id, {
     verificationId: JSON.stringify({
       documentType: req.body.documentType,
-      image: req.body.image,
+      idDocument: req.body.idDocument,
     }),
+    selfiImg: req.body.selfiImg,
+    submitVerification: true,
   });
 
   res.status(200).json({
     status: "success",
     message: "Document Id uploaded successfully!",
+  });
+});
+
+// METHOD              PATCH
+// ROUTE               api/v1/profile/updatePrifilePrivacy
+// ACCESS              PRIVATE
+// DESC                update the Profile Privacy
+
+exports.updateProfilePrivacy = catchAsync(async (req, res) => {
+  console.log(req.body);
+  await UserProfile.findByIdAndUpdate(req.body.id, {
+    agreeAndDisAgreeOnReview: req.body.agreeAndDisAgreeOnReview,
+    allowPersonalizeAdds: req.body.allowPersonalizeAdds,
+    allowToSearchMyAccount: req.body.allowToSearchMyAccount,
+    newOffers: req.body.newOffers,
+    nonPersonalizedAdd: req.body.nonPersonalizedAdd,
+    plateFormUpdateAnnounce: req.body.plateFormUpdateAnnounce,
+    preferences: req.body.preferences,
+    proPrivacy: req.body.proPrivacy,
+    reviewAndVisibility: req.body.reviewAndVisibility,
+    shareLocationToNearProfile: req.body.shareLocationToNearProfile,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Profile privacy updated successfully!",
   });
 });

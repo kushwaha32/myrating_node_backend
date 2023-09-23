@@ -270,7 +270,7 @@ exports.otpVerify = catchAsync(async (req, res, next) => {
   await User.findOneAndUpdate(user._id, { userProfile: userProfession._id });
 
   user = await User.findById(user._id);
-  console.log(user);
+
   //  delete the otp
   await MobileOtp.deleteMany({
     contactNumber: rightOtpFind.contactNumber,
@@ -1204,5 +1204,35 @@ exports.updateContactInfo = catchAsync(async (req, res, next) => {
     data: {
       user: updatedUser,
     },
+  });
+});
+
+// @ROUTE           /api/v1/user/check_has_password
+// @METHOD          GET
+// @DESC            Return info that user has password or not
+// @ACCESS          PRIVATE
+
+exports.checkUserHasPassword = catchAsync(async (req, res, next) => {
+  // get the user Id
+
+  const userId = req.user.id;
+
+  const user = await User.findById(userId).select("+password");
+  console.log(user);
+  ////////////////////////////////////////////////////////////////
+  /////---- Already created Password return true ----////////////
+  //////////////////////////////////////////////////////////////
+  if (user.password) {
+    return res.status(200).json({
+      status: "success",
+      hasPass: true,
+    });
+  }
+  ////////////////////////////////////////////////////////////////
+  ///////---- Not created password return false ----/////////////
+  //////////////////////////////////////////////////////////////
+  res.status(200).json({
+    status: "success",
+    hasPass: false,
   });
 });

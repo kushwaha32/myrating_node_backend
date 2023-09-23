@@ -5,6 +5,7 @@ const {
   updateUserProfile,
   updateUserProfileImage,
   updateDocumentId,
+  updateProfilePrivacy,
 } = require("../controllers/userProfileController");
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
@@ -33,5 +34,9 @@ router
 router
   .route("/update-document-id")
   .patch(protect, restrictTo("user"), updateDocumentId);
+
+router
+  .route("/update-profile-privacy")
+  .patch(protect, restrictTo("user"), updateProfilePrivacy);
 
 module.exports = router;
