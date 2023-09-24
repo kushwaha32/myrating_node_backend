@@ -1115,6 +1115,8 @@ exports.brandSignUPOtpVerify = catchAsync(async (req, res, next) => {
     user: userNoProfile._id,
     brandName: req.body.data.companyName,
     brandNameSlug: brandSlug,
+    ownerTitle: req.body.data.title,
+    ownerName: req.body.data.fullName,
   });
 
   userNoProfile = await userNoProfile.save({ validateBeforeSave: false });

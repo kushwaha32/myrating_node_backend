@@ -24,7 +24,12 @@ const brandProfileSchema = new mongoose.Schema(
       ref: "RegisteredAs",
       // required: true,
     },
-
+    ownerTitle: {
+      type: String,
+    },
+    ownerName: {
+      type: String,
+    },
     industry: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Industry",
@@ -45,6 +50,57 @@ const brandProfileSchema = new mongoose.Schema(
         type: String,
         // required: true,
       },
+      building: {
+        type: String,
+      },
+      street: {
+        type: String,
+      },
+      landmark: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      pinCode: {
+        type: String,
+      },
+    },
+    mobileNo: {
+      type: String,
+    },
+    landLine: {
+      type: String,
+    },
+    tollFreeNo: {
+      type: String,
+    },
+    emailId: {
+      type: String,
+    },
+    websites: {
+      type: String,
+    },
+    youtube: {
+      type: String,
+    },
+    facebook: {
+      type: String,
+    },
+    twitter: {
+      type: String,
+    },
+    instagram: {
+      type: String,
     },
     acceptTAndC: {
       type: Boolean,
