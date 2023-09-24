@@ -45,12 +45,6 @@ exports.updateBusinessProfile = catchAsync(async (req, res, next) => {
   });
 });
 
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
@@ -59,15 +53,35 @@ exports.updateBusinessProfile = catchAsync(async (req, res, next) => {
 // Desc            get the brand pased on the slug
 // Access          PUBLIC
 
+exports.getSingleBrand = catchAsync(async (req, res) => {
+  const brandProfile = await BrandProfile.findOne({
+    brandNameSlug: req.params.brandSlug,
+  });
 
-exports.getSingleBrand = catchAsync(async(req, res) => {
-        
-        const brandProfile = await BrandProfile.findOne({brandNameSlug: req.params.brandSlug})
-        
-        res.status(200).json({
-          status: "succcess",
-          data: {
-            brandProfile
-          }
-        })
-})
+  res.status(200).json({
+    status: "succcess",
+    data: {
+      brandProfile,
+    },
+  });
+});
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// ROUTE           /api/v1/brandProfile/update/brand-industry
+// Method          GET
+// Desc            get the brand pased on the slug
+// Access          PUBLIC
+
+exports.updateBrandIndustry = catchAsync(async (req, res) => {
+  console.log(req.body);
+  // const brandProfile = await BrandProfile.findOneAndUpdate(req.user.id, {industry: })
+
+  res.status(200).json({
+    status: "succcess",
+    data: {
+      // brandProfile
+    },
+  });
+});
