@@ -143,15 +143,17 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
 exports.createReview = catchAsync(async (req, res, next) => {
   // Allow nested routes
   if (!req.body.product) req.body.product = req.params.productId;
-
+  console.log(req.body.product);
   // set the user
   req.body.user = req.user.id;
 
   // destructure the body data
-  const { product, review, rating, user, rateAs } = req.body;
+  const { product, review, rating, user } = req.body;
+  // get product id
+  const getProduct = await Product.findOne({ productNameSlug: product });
 
   // get the user if allready given the reating
-  const getReview = await Reviews.findOne({ user, product });
+  const getReview = await Reviews.findOne({ user, product: getProduct._id });
 
   // check if user given the rating
   if (getReview) {
@@ -163,10 +165,10 @@ exports.createReview = catchAsync(async (req, res, next) => {
   // creating the new review
   const newReview = await Reviews.create({
     user: req.user.id,
-    product,
+    product: getProduct._id,
     review,
     rating,
-    ratingAs: rateAs,
+    reviewImg: JSON.stringify(req.body.reviewImg),
   });
 
   // populate the created review with product
@@ -188,7 +190,7 @@ exports.createReview = catchAsync(async (req, res, next) => {
     await calcPeaches(reviewOwner);
   }
 
-  const reviews = await Reviews.find({ product })
+  const reviews = await Reviews.find({ product: getProduct._id })
     .populate("user")
     .sort("-createdAt");
   const products = await Product.find().populate("reviews").sort("-createdAt");
@@ -225,7 +227,7 @@ exports.updateReview = catchAsync(async (req, res, next) => {
   const update = {
     review: req.body.review,
     rating: req.body.rating,
-    ratingAs: req.body.rateAs,
+    reviewImg: JSON.stringify(req.body.reviewImg),
   };
 
   // find one review with _id, product, current auth user

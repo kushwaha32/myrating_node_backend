@@ -12,11 +12,14 @@ const reviewSchema = new mongoose.Schema(
       min: 1,
       max: 5,
     },
-    ratingAs: {
+    // ratingAs: {
+    //   type: String,
+    //   required: [true, "Please select the Rating As"],
+    //   enum: ["visitor", "customer", "public"],
+    //   lowercase: true,
+    // },
+    reviewImg: {
       type: String,
-      required: [true, "Please select the Rating As"],
-      enum: ["visitor", "customer", "public"],
-      lowercase: true,
     },
     product: {
       type: mongoose.Schema.Types.ObjectId,

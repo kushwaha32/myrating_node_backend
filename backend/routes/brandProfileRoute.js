@@ -5,6 +5,7 @@ const {
   updateBrandIndustry,
   updateLocationInfo,
   updateContactInfo,
+  getSingleBrandFromUser,
 } = require("../controllers/BusinessProfileController");
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
@@ -21,6 +22,8 @@ router
   );
 
 router.route("/:brandSlug").get(getSingleBrand);
+
+router.route("/user/:userId").get(getSingleBrandFromUser);
 
 //////////////////////////////////////////////////////////////////
 ///////////////--- update brand industry route ---///////////////

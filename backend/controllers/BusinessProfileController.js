@@ -70,6 +70,27 @@ exports.getSingleBrand = catchAsync(async (req, res) => {
 /////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////
 
+// ROUTE           /api/v1/brandProfile/user/:userId
+// Method          GET
+// Desc            get the brand based on userId
+// Access          PUBLIC
+
+exports.getSingleBrandFromUser = catchAsync(async (req, res) => {
+  const brandProfile = await BrandProfile.findOne({
+    user: req.params.userId,
+  });
+
+  res.status(200).json({
+    status: "succcess",
+    data: {
+      brandProfile,
+    },
+  });
+});
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
 // ROUTE           /api/v1/brandProfile/update/brand-industry
 // Method          PATCH
 // Desc            get the brand pased on the slug
