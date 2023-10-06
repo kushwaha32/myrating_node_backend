@@ -18,7 +18,6 @@ const brandProfileSchema = new mongoose.Schema(
     brandImage: {
       type: String,
     },
-
     registeredAs: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "RegisteredAs",
@@ -113,7 +112,11 @@ const brandProfileSchema = new mongoose.Schema(
       default: true,
     },
   },
-  { timestamps: true }
+  { timestamps: true },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  }
 );
 
 brandProfileSchema.pre(/^find/, function (next) {
@@ -121,6 +124,23 @@ brandProfileSchema.pre(/^find/, function (next) {
 
   next();
 });
+
+// setting the index
+brandProfileSchema.index({ location: "2dsphere" });
+
+// virtual populate review
+brandProfileSchema.virtual("businessReview", {
+  ref: "BusinessReviews",
+  foreignField: "businessProfile",
+  localField: "_id",
+});
+
+// virtual populate likes
+// brandProfileSchema.virtual("likes", {
+//   ref: "Like",
+//   foreignField: "product",
+//   localField: "_id",
+// });
 
 const BrandProfile = mongoose.model("BrandProfile", brandProfileSchema);
 

@@ -3,7 +3,7 @@ const { protect, restrictTo } = require("../controllers/authController");
 const {
   createReviewDisAgree,
   getAllReviewDisAgree,
-} = require("../controllers/reviewAgreeAndDisAgreController");
+} = require("../controllers/businessReviewAgreeAndDisAgreeController");
 
 const router = express.Router({ mergeParams: true });
 

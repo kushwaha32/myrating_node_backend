@@ -22,17 +22,22 @@ const industrySubCatRoute = require("./routes/industrySubCategoryRoute");
 const regiteredAsRoute = require("./routes/registeredAsRoute");
 const reviewDisAgreeRoute = require("./routes/reviewDisAgreeRoute");
 const reviewAgreeRoute = require("./routes/reviewAgreeRoute");
+
+const businessReviewDisAgreeRoute = require("./routes/businessReviewDisAgreeRoute");
+const businessReviewAgreeRoute = require("./routes/businessReviewAgreeRoute");
+
 const searchCityRoute = require("./routes/searchCityRoute");
 const brandProductRoute = require("./routes/business/businessRoute");
 const bucketImgRoute = require("./routes/bucketImgRoute");
+const brandReviewRoute = require("./routes/brandReviewRoute");
 
 const app = express();
 app.use(express.static(`${__dirname}/public`));
 // 1) GLOBAL MIDDLEWARES
 // prevent cross site scription
 const corsOpts = {
-  // origin: "http://localhost:3000",
-  origin: "https://myratings.in",
+  origin: "http://localhost:3000",
+  // origin: "https://myratings.in",
   credentials: true,
   methods: ["GET", "POST", "HEAD", "PUT", "PATCH", "DELETE"],
   allowedHeaders: [
@@ -97,6 +102,9 @@ app.use("/api/v1/BrandProduct", brandProductRoute);
 // review route
 app.use("/api/v1/review", reviewRoutes);
 
+// brand route
+app.use("/api/v1/brandReview", brandReviewRoute);
+
 // likes route
 app.use("/api/v1/like", likeRoutes);
 
@@ -124,6 +132,10 @@ app.use("/api/v1/registeredAs", regiteredAsRoute);
 // reviewAgreeAndDisAgree route
 app.use("/api/v1/reviewAgree", reviewAgreeRoute);
 app.use("/api/v1/reviewDisAgree", reviewDisAgreeRoute);
+
+// reviewAgreeAndDisAgree route
+app.use("/api/v1/businessReviewAgree", businessReviewAgreeRoute);
+app.use("/api/v1/businessReviewDisAgree", businessReviewDisAgreeRoute);
 
 // searched city routes
 app.use("/api/v1/searchCity", searchCityRoute);

@@ -601,6 +601,7 @@ exports.forgetPassword = catchAsync(async (req, res, next) => {
   // }
 
   // if user send the contact number
+  console.log(userWithContactNO);
   if (userWithContactNO) {
     await sendOtpToContactSaveToCollection(
       userWithContactNO.contactNumber,

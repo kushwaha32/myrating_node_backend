@@ -9,6 +9,7 @@ const {
 } = require("../controllers/BusinessProfileController");
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
+const brandReviewRoute = require("../routes/brandReviewRoute");
 
 const router = express.Router();
 
@@ -20,9 +21,8 @@ router
     uploadProductImage,
     updateBusinessProfile
   );
-
+router.use("/:brandSlug/brandReview", brandReviewRoute);
 router.route("/:brandSlug").get(getSingleBrand);
-
 router.route("/user/:userId").get(getSingleBrandFromUser);
 
 //////////////////////////////////////////////////////////////////
