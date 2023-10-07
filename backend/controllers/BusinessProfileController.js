@@ -1,4 +1,3 @@
-const mongoose = require("mongoose");
 const BrandProfile = require("../models/brandProfileModel");
 const User = require("../models/userModel");
 const catchAsync = require("../utils/catchAsync");

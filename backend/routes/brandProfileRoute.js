@@ -6,7 +6,7 @@ const {
   updateLocationInfo,
   updateContactInfo,
   getSingleBrandFromUser,
-} = require("../controllers/businessProfileController");
+} = require("../controllers/BusinessProfileController");
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
 const brandReviewRoute = require("../routes/brandReviewRoute");
