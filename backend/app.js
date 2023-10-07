@@ -13,6 +13,7 @@ const userRoutes = require("./routes/userRoutes");
 const productRoutes = require("./routes/productRoutes");
 const reviewRoutes = require("./routes/reviewRoute");
 const likeRoutes = require("./routes/likesRoutes");
+const brandLikeRoutes = require("./routes/brandLikeRoute");
 const userProffessionRoute = require("./routes/userProffessionRoute");
 const userProfileRoute = require("./routes/userProfileRoute");
 const brandProfileRoute = require("./routes/brandProfileRoute");
@@ -107,6 +108,9 @@ app.use("/api/v1/brandReview", brandReviewRoute);
 
 // likes route
 app.use("/api/v1/like", likeRoutes);
+
+// brand likes route
+app.use("/api/v1/brandLike", brandLikeRoutes);
 
 // user proffession
 app.use("/api/v1/userproffession", userProffessionRoute);

@@ -10,6 +10,7 @@ const {
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
 const brandReviewRoute = require("../routes/brandReviewRoute");
+const brandLikeRoute = require("../routes/brandLikeRoute");
 
 const router = express.Router();
 
@@ -24,6 +25,8 @@ router
 router.use("/:brandSlug/brandReview", brandReviewRoute);
 router.route("/:brandSlug").get(getSingleBrand);
 router.route("/user/:userId").get(getSingleBrandFromUser);
+
+router.use("/:brandProfileId/brandLike", brandLikeRoute);
 
 //////////////////////////////////////////////////////////////////
 ///////////////--- update brand industry route ---///////////////

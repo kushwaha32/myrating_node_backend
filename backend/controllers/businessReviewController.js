@@ -107,6 +107,10 @@ exports.getAllReviews = catchAsync(async (req, res, next) => {
   // fetching all the reviews
   if (Object.keys(req.query).length !== 0) {
     delete req.query.brandProfileId;
+    const brandProfile = await BrandProfile.findOne({
+      brandNameSlug: req.query.businessProfile,
+    });
+    req.query.businessProfile = brandProfile._id;
     reviews = new APIFeatures(BusinessReviews.find(), req.query)
       .filter()
       .sort()
