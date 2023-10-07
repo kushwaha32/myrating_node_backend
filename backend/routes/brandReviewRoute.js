@@ -7,7 +7,7 @@ const {
   convertProductSlug,
   rDistribution,
   avgRatingBrandProfile,
-} = require("../controllers/BusinessReviewController");
+} = require("../controllers/businessReviewController");
 const { protect, restrictTo } = require("../controllers/authController");
 const brandReviewAgreeRoute = require("./businessReviewAgreeRoute");
 const brandReviewDisAgreeRoute = require("./businessReviewDisAgreeRoute");
