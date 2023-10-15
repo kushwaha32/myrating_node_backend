@@ -6,6 +6,10 @@ const {
   updateLocationInfo,
   updateContactInfo,
   getSingleBrandFromUser,
+  updateOtherInfo,
+  updateKeywords,
+  updatePhotoProfile,
+  updateSubmitVerify,
 } = require("../controllers/BusinessProfileController");
 const { protect, restrictTo } = require("../controllers/authController");
 const { uploadProductImage } = require("../controllers/productController");
@@ -48,5 +52,33 @@ router
 router
   .route("/update/contact-information")
   .patch(protect, restrictTo("business"), updateContactInfo);
+
+///////////////////////////////////////////////////////////////////////
+///////////////--- update other information route ---///////////////
+/////////////////////////////////////////////////////////////////////
+router
+  .route("/update/other-information")
+  .patch(protect, restrictTo("business"), updateOtherInfo);
+
+///////////////////////////////////////////////////////////////////////
+///////////////--- update keywords route ---///////////////
+/////////////////////////////////////////////////////////////////////
+router
+  .route("/update/keywords")
+  .patch(protect, restrictTo("business"), updateKeywords);
+
+///////////////////////////////////////////////////////////////////////
+///////////////--- update photo route ---///////////////
+/////////////////////////////////////////////////////////////////////
+router
+  .route("/update/photo-profile")
+  .patch(protect, restrictTo("business"), updatePhotoProfile);
+
+///////////////////////////////////////////////////////////////////////
+///////////////--- update submit verify route ---///////////////
+/////////////////////////////////////////////////////////////////////
+router
+  .route("/update/submit-verify")
+  .patch(protect, restrictTo("business"), updateSubmitVerify);
 
 module.exports = router;

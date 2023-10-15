@@ -101,6 +101,16 @@ const brandProfileSchema = new mongoose.Schema(
     instagram: {
       type: String,
     },
+    description: { type: String },
+    offers: { type: String },
+    awartCerRecognitions: { type: String },
+    pamentModes: { type: String },
+    stablishmentYear: { type: String },
+    hoursOfOperation: { type: String },
+    keywords: { type: String },
+    multiImg: { type: String },
+    businessDoc: { type: String },
+    idOfAdmin: { type: String },
     acceptTAndC: {
       type: Boolean,
       required: [true, "Please accept our Terms And Condition"],

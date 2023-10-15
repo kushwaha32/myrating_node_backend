@@ -180,3 +180,113 @@ exports.updateContactInfo = catchAsync(async (req, res) => {
     message: "Contact information updated successfully!",
   });
 });
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// ROUTE           /api/v1/brandProfile/update/other-information
+// Method          PATCH
+// Desc            get the brand pased on the slug
+// Access          PRIVATE
+
+exports.updateOtherInfo = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  await BrandProfile.findByIdAndUpdate(
+    user.brandProfile,
+    {
+      description: req.body.description,
+      offers: JSON.stringify(req.body.offer),
+      awartCerRecognitions: JSON.stringify(req.body.awardCerRecognition),
+      pamentModes: JSON.stringify(req.body.pamentModes),
+      stablishmentYear: JSON.stringify(req.body.stablishmentYear),
+      hoursOfOperation: JSON.stringify(req.body.hoursOfOperation),
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Contact information updated successfully!",
+  });
+});
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// ROUTE           /api/v1/brandProfile/update/keywords
+// Method          PATCH
+// Desc            get the brand pased on the slug
+// Access          PRIVATE
+
+exports.updateKeywords = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  await BrandProfile.findByIdAndUpdate(
+    user.brandProfile,
+    {
+      keywords: req.body.keywords,
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Contact information updated successfully!",
+  });
+});
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// ROUTE           /api/v1/brandProfile/update/photo-profile
+// Method          PATCH
+// Desc            get the brand pased on the slug
+// Access          PRIVATE
+
+exports.updatePhotoProfile = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  await BrandProfile.findByIdAndUpdate(
+    user.brandProfile,
+    {
+      brandImage: req.body.profileImg,
+      multiImg: JSON.stringify(req.body.multiImg),
+    },
+    { new: true }
+  );
+  const brandProfile = await BrandProfile.findOne({ _id: user.brandProfile });
+  res.status(200).json({
+    status: "success",
+    message: "Contact information updated successfully!",
+    data: {
+      brandProfile,
+    },
+  });
+});
+
+/////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////
+
+// ROUTE           /api/v1/brandProfile/update/submit-verify
+// Method          PATCH
+// Desc            get the brand pased on the slug
+// Access          PRIVATE
+
+exports.updateSubmitVerify = catchAsync(async (req, res) => {
+  const user = await User.findById(req.user.id);
+
+  await BrandProfile.findByIdAndUpdate(
+    user.brandProfile,
+    {
+      businessDoc: JSON.stringify(req.body.businessDoc),
+      idOfAdmin: JSON.stringify(req.body.idOfAdmin),
+    },
+    { new: true }
+  );
+
+  res.status(200).json({
+    status: "success",
+    message: "Contact information updated successfully!",
+  });
+});
