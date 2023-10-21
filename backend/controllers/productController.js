@@ -157,17 +157,46 @@ exports.createProduct = catchAsync(async (req, res, next) => {
   // destruct the product fields from the req.body
 
   // const productImg = req.file.filename;
-  const { productName, category, bio, location, image } = req.body;
+  const { productName } = req.body;
   const productNameSlug = productName.split(" ").join("-");
 
   const product = await Product.create({
+    productName: productName,
+    productNameSlug: productNameSlug,
     user: userId,
-    productName,
-    productNameSlug,
-    subCategory: category,
-    bio,
-    proifleImg: image,
-    location: JSON.parse(location),
+    category: req.body.productCategoryId,
+    bio: req.body.description,
+    proifleImg: req.body.profileImg,
+    location: {
+      // GeoJson
+      type: "Point",
+      coordinates: [req.body.lng, req.body.lat],
+      building: req.body.building,
+      street: req.body.street,
+      landmark: req.body.landmark,
+      area: req.body.area,
+      country: req.body.country,
+      state: req.body.state,
+      city: req.body.city,
+      pinCode: req.body.pinCode,
+    },
+    awardCerRecognition: JSON.stringify(req.body.awardCerRecognition),
+    emailId: JSON.stringify(req.body.emailId),
+    facebook: JSON.stringify(req.body.facebook),
+    hoursOfOperation: JSON.stringify(req.body.hoursOfOperation),
+    instagram: JSON.stringify(req.body.instagram),
+    isSameAsAdmin: JSON.stringify(req.body.isSameAsAdmin),
+    keywords: req.body.keywords,
+    landline: JSON.stringify(req.body.landLine),
+    mobileNo: JSON.stringify(req.body.mobileNo),
+    multiImg: JSON.stringify(req.body.multiImg),
+    offer: JSON.stringify(req.body.offer),
+    pamentModes: JSON.stringify(req.body.pamentModes),
+    stablishmentYear: JSON.stringify(req.body.stablishmentYear),
+    tollFreeNo: JSON.stringify(req.body.tollFreeNo),
+    twitter: JSON.stringify(req.body.twitter),
+    websites: JSON.stringify(req.body.websites),
+    youTube: JSON.stringify(req.body.youtube),
   });
 
   const products = await Product.find().sort("-createdAt");

@@ -24,6 +24,10 @@ const productSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "IndustrySubCategory",
     },
+    category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Industry",
+    },
     bio: {
       type: String,
       required: [true, "Plase provide the bio of the Profile"],
@@ -38,16 +42,87 @@ const productSchema = new mongoose.Schema(
         type: String,
         default: "Point",
         enum: ["Point"],
-        required: [true, "please provide the location"],
+        // required: [true, "please provide the location"],
       },
       coordinates: {
         type: [Number],
-        required: true,
+        // required: true,
       },
-      address: {
+      building: {
         type: String,
-        required: true,
       },
+      street: {
+        type: String,
+      },
+      landmark: {
+        type: String,
+      },
+      area: {
+        type: String,
+      },
+      country: {
+        type: String,
+      },
+      state: {
+        type: String,
+      },
+      city: {
+        type: String,
+      },
+      pinCode: {
+        type: String,
+      },
+    },
+    awardCerRecognition: {
+      type: String,
+    },
+    emailId: {
+      type: String,
+    },
+    facebook: {
+      type: String,
+    },
+    hoursOfOperation: {
+      type: String,
+    },
+    instagram: {
+      type: String,
+    },
+    isSameAsAdmin: {
+      type: String,
+    },
+    keywords: {
+      type: String,
+    },
+    landline: {
+      type: String,
+    },
+    mobileNo: {
+      type: String,
+    },
+    multiImg: {
+      type: String,
+    },
+    offer: {
+      type: String,
+    },
+    pamentModes: {
+      type: String,
+    },
+    stablishmentYear: {
+      type: String,
+    },
+    tollFreeNo: {
+      type: String,
+    },
+    twitter: {
+      type: String,
+    },
+    websites: {
+      type: String,
+    },
+    youTube: {
+      type: String,
     },
     totalLikes: {
       type: Number,
